@@ -15291,6 +15291,8 @@ const dictionary = [
 ]
 
 // data
+const CURRENT_VER = 3;
+
 const WORD_LENGTH = 5
 const FLIP_ANIMATION_DURATION = 500
 const DANCE_ANIMATION_DURATION = 500
@@ -15313,9 +15315,12 @@ window.onload = function () {
 }
 
 function saveData() {
+  
   if (hasPlayedToday) {
-    localStorage.setItem('hasPlayedToday', hasPlayedToday);
-    localStorage.setItem('lastDatePlayed', new Date().toISOString().split('T')[0]);
+    localStorage.setItem('hasPlayedToday', JSON.stringify(hasPlayedToday));
+    if (localStorage.getItem(lastDatePlayed) === null) {
+      localStorage.setItem('lastDatePlayed', JSON.stringify(new Date().toISOString().split('T')[0]));
+    }
 
     localStorage.setItem('lettersFound', JSON.stringify(lettersFound));
     localStorage.setItem('lettersGuessed', JSON.stringify(lettersGuessed,));
@@ -15330,54 +15335,70 @@ function saveData() {
 }
 
 function loadData() {
-  hasPlayedToday = new Boolean(localStorage.getItem('hasPlayedToday'));
-  let date = new Date().toISOString().split('T')[0];
-  lastDatePlayed = localStorage.getItem('lastDatePlayed');
-
-  if (date !== lastDatePlayed) { // new day, clear
+  let ver = JSON.parse(localStorage.getItem("currentVersion"));
+  if (ver == null) {
+    localStorage.setItem("currentVersion", JSON.stringify(CURRENT_VER));
+    ver = CURRENT_VER;
+    console.log("no ver. set");
+  } else if ( ver < CURRENT_VER ) {
+    console.log(`Version updated from ${ver} to ${CURRENT_VER}`)
     localStorage.clear();
-    lettersGuessed = []
+    localStorage.setItem("currentVersion", JSON.stringify(CURRENT_VER));
     canPlay = true;
-
-  } else if (hasPlayedToday == true) {
-    console.log("loading...");
-
-    lettersFound = JSON.parse(localStorage.getItem('lettersFound'));
-    //    lettersFound.forEach(console.log())
-
-    lettersGuessed = JSON.parse(localStorage.getItem('lettersGuessed'));
-
-    guessGrid.innerHTML = JSON.parse(localStorage.getItem('guessGrid'));
-    keyboard.innerHTML = JSON.parse(localStorage.getItem('keyboard'));
-
-    let tmpTiles = Array.from(getAllTiles());
-    for (let i = 0; i < 6; i++) {
-      let tmpArr = Array.from(tmpTiles.slice(i * 5, (i + 1) * 5));
-      
-      if (tmpArr.length === 5)
-        tmpArr.forEach((...params) => flipTile(...params, "", FLIP_ANIMATION_DURATION / 3));
-      else {  
-        tmpArr.forEach((v) =>   {
-        v.textContent = ""
-        delete v.dataset.state
-        delete v.dataset.letter
-      })
-      }
-    }
-
-    score = 5 - Array.from(lettersFound).filter((v) => (v === true)).length //localStorage.getItem('score');
-    document.getElementById("score-div").innerHTML = `Score: ${score}/5`;
-
-    setTimeout(() => {
+    return;
+  } 
+  
+  if (ver === CURRENT_VER) {
+    console.log("correct ver")
+    hasPlayedToday = JSON.parse(localStorage.getItem('hasPlayedToday'));
+    let date = new Date().toISOString().split('T')[0];
+    lastDatePlayed = JSON.parse(localStorage.getItem('lastDatePlayed'));
+  
+    if (date !== lastDatePlayed) { // new day, clear
+      localStorage.clear();
+      localStorage.setItem("currentVersion", JSON.stringify(CURRENT_VER));
+      lettersGuessed = []
       canPlay = true;
-
-    }, "750");
-  } else {
-    console.log("has not played, starting fresh.");
-    canPlay = true;
-
+  
+    } else if (hasPlayedToday == true) {
+      console.log("loading...");
+  
+      lettersFound = JSON.parse(localStorage.getItem('lettersFound'));
+      //    lettersFound.forEach(console.log())
+  
+      lettersGuessed = JSON.parse(localStorage.getItem('lettersGuessed'));
+  
+      guessGrid.innerHTML = JSON.parse(localStorage.getItem('guessGrid'));
+      keyboard.innerHTML = JSON.parse(localStorage.getItem('keyboard'));
+  
+      let tmpTiles = Array.from(getAllTiles());
+      for (let i = 0; i < 6; i++) {
+        let tmpArr = Array.from(tmpTiles.slice(i * 5, (i + 1) * 5));
+        
+        if (tmpArr.length === 5)
+          tmpArr.forEach((...params) => flipTile(...params, "", FLIP_ANIMATION_DURATION / 3));
+        else {  
+          tmpArr.forEach((v) =>   {
+          v.textContent = ""
+          delete v.dataset.state
+          delete v.dataset.letter
+        })
+        }
+      }
+  
+      score = 5 - Array.from(lettersFound).filter((v) => (v === true)).length //localStorage.getItem('score');
+      document.getElementById("score-div").innerHTML = `Score: ${score}/5`;
+  
+      setTimeout(() => {
+        canPlay = true;
+  
+      }, "750");
+    } else {
+      console.log("has not played, starting fresh.");
+      canPlay = true;
+  
+    }
   }
-
 }
 
 
@@ -15428,6 +15449,11 @@ function handleKeyPress(e) {
       pressKey(e.key)
       return
     }
+
+    // if (e.key === "Escape") {
+    //   localStorage.clear();
+    //   location.reload();
+    // }
   }
 }
 
@@ -15447,6 +15473,18 @@ function deleteKey(t) {
   lastTile.textContent = ""
   delete lastTile.dataset.state
   delete lastTile.dataset.letter
+}
+
+function checkUsesNewLetter(guess) {
+  if (lettersGuessed.length > 0) {
+    for (const ch of guess) {
+      if (!lettersGuessed.includes(ch)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  return true;
 }
 
 function storeGuessedLetters(letters) {
@@ -15470,34 +15508,24 @@ function submitGuess() {
     return word + tile.dataset.letter
   }, "")
 
-  var isAnyLetterNew = false;
-  if (lettersGuessed.length > 0) {
-    for (const ch of guess) {
-      if (!lettersGuessed.includes(ch)) {
-        isAnyLetterNew = true;
-        break;
-      }
-    }
-
-    if (!isAnyLetterNew) {
-      showAlert("Guess must include at least one new letter")
-      shakeTiles(activeTiles)
-      storeGuessedLetters(guess);
-      return;
-    }
-  }
-
-
   if (!hasPlayedToday)
     hasPlayedToday = true;
 
-  storeGuessedLetters(guess);
 
   if (!dictionary.includes(guess)) {
     showAlert("Not in word list")
     shakeTiles(activeTiles)
     return
   }
+
+  if (!checkUsesNewLetter(guess)) {
+    showAlert("Guess must include at least one new letter")
+    shakeTiles(activeTiles)
+    return;
+  } else {
+    storeGuessedLetters(guess);
+  }
+
   saveData();
   stopInteraction()
   activeTiles.forEach((...params) => flipTile(...params, guess));

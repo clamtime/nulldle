@@ -48,13 +48,17 @@
 }
 
 .popup {
-  margin: 70px auto;
-  padding: 20px;
+  margin: 4em auto;
+  padding: 1em;
   background: #fff;
-  border-radius: 5px;
-  width: 30%;
-  position: relative;
+  border-radius: 1em;
+  width: fit-content;
+  max-width: calc(100% - 1em); /* 1m for horiz margins; */
+  max-height: calc(100% - 6em);
+  overflow-y: auto;
+
   transition: all .5s ease-in-out;
+  position: relative;
 }
 
 .popup h1 {
@@ -88,11 +92,10 @@ h3 {
 }
 
 .popup .close {
-  position: absolute;
-  top: 20px;
-  right: 30px;
+  width: 50em;
   transition: all 200ms;
-  font-size: 30px;
+  font-size: 2em;
+  text-align: center;
   font-weight: bold;
   text-decoration: none;
   color: #333;
@@ -283,14 +286,18 @@ h3 {
 }
 
 .guess-grid {
-  display: grid;
+  display:grid;
   justify-content: center;
   align-content: center;
   flex-grow: 1;
   grid-template-columns: repeat(5, 4em);
   grid-template-rows: repeat(6, 4em);
-  gap: .25em;
+
+
   margin-bottom: 1em;
+
+
+  gap: .25em;
 }
 
 body {
@@ -301,21 +308,23 @@ body {
   align-items: center;
   padding: 1em;
   margin-top: 2%;
+
   font-size: clamp(.5rem, 1rem, 1.5rem);
-  /* transform: scale(1); */
+  transform: clamp(.5rem, 1rem, 1.5rem);
 }
 
 footer {
   position: fixed;
   left: 0;
-  bottom: 0;
+  top: 0;
   width: 100%;
   justify-content: center;
   align-items: center;
   font-family: 'Courier New', Courier, monospace;
   font-size: clamp(.5rem, 1rem, 1.5rem);
   color: white;
-  text-align: right;
+  text-align: left;
+  padding: .25em;
 }
 
 .game-title {
@@ -327,9 +336,11 @@ footer {
 
   display: flex;
   background-position: center;
-  background-size: cover;
-  width: 20em;
-  height: 9em;
+  background-size: contain;
+  /* width: 20em; */
+  /* height:9em; */
+  width: clamp(10em, 20vw, 20em);
+  height: clamp(5em, 9vh, 9em);
   background-repeat: no-repeat;
 }
 
