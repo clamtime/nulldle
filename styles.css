@@ -301,7 +301,7 @@ body {
   align-items: center;
   padding: 1em;
   margin-top: 2%;
-  font-size: clamp(.5rem, 1.8vmin, 1.5rem);
+  font-size: clamp(.5rem, 1rem, 1.5rem);
   /* transform: scale(1); */
 }
 
@@ -313,7 +313,7 @@ footer {
   justify-content: center;
   align-items: center;
   font-family: 'Courier New', Courier, monospace;
-  font-size: clamp(.5rem, 1.6vmin, 1.5rem);
+  font-size: clamp(.5rem, 1rem, 1.5rem);
   color: white;
   text-align: right;
 }

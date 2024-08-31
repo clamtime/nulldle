@@ -15318,9 +15318,9 @@ function saveData() {
     localStorage.setItem('lastDatePlayed', new Date().toISOString().split('T')[0]);
 
     localStorage.setItem('lettersFound', JSON.stringify(lettersFound));
-    localStorage.setItem('lettersGuessed', JSON.stringify(lettersGuessed));
-    localStorage.setItem('guessGrid', guessGrid.innerHTML);
-    localStorage.setItem('keyboard', keyboard.innerHTML);
+    localStorage.setItem('lettersGuessed', JSON.stringify(lettersGuessed,));
+    localStorage.setItem('guessGrid', JSON.stringify(guessGrid.innerHTML));
+    localStorage.setItem('keyboard', JSON.stringify(keyboard.innerHTML));
     localStorage.setItem('score', score);
     console.log("saving...");
   } else {
@@ -15345,14 +15345,24 @@ function loadData() {
     lettersFound = JSON.parse(localStorage.getItem('lettersFound'));
     //    lettersFound.forEach(console.log())
 
-    lettersGuessed = localStorage.getItem('lettersGuessed').split(',');
+    lettersGuessed = JSON.parse(localStorage.getItem('lettersGuessed'));
 
-    guessGrid.innerHTML = localStorage.getItem('guessGrid');
-    keyboard.innerHTML = localStorage.getItem('keyboard');
+    guessGrid.innerHTML = JSON.parse(localStorage.getItem('guessGrid'));
+    keyboard.innerHTML = JSON.parse(localStorage.getItem('keyboard'));
 
     let tmpTiles = Array.from(getAllTiles());
     for (let i = 0; i < 6; i++) {
-      Array.from(tmpTiles.slice(i * 5, (i + 1) * 5)).forEach((...params) => flipTile(...params, "", FLIP_ANIMATION_DURATION / 3));
+      let tmpArr = Array.from(tmpTiles.slice(i * 5, (i + 1) * 5));
+      
+      if (tmpArr.length === 5)
+        tmpArr.forEach((...params) => flipTile(...params, "", FLIP_ANIMATION_DURATION / 3));
+      else {  
+        tmpArr.forEach((v) =>   {
+        v.textContent = ""
+        delete v.dataset.state
+        delete v.dataset.letter
+      })
+      }
     }
 
     score = 5 - Array.from(lettersFound).filter((v) => (v === true)).length //localStorage.getItem('score');
@@ -15430,8 +15440,8 @@ function pressKey(key) {
   nextTile.dataset.state = "active"
 }
 
-function deleteKey() {
-  const activeTiles = getActiveTiles()
+function deleteKey(t) {
+  activeTiles = getActiveTiles()
   const lastTile = activeTiles[activeTiles.length - 1]
   if (lastTile == null) return
   lastTile.textContent = ""
@@ -15488,10 +15498,10 @@ function submitGuess() {
     shakeTiles(activeTiles)
     return
   }
-
+  saveData();
   stopInteraction()
   activeTiles.forEach((...params) => flipTile(...params, guess));
-  saveData();
+
 
 }
 
@@ -15545,7 +15555,7 @@ function getActiveTiles() {
 }
 
 function getAllTiles() {
-  return guessGrid.querySelectorAll("[data-state]")
+  return guessGrid.querySelectorAll("[data-letter]")
 }
 
 function showAlert(message, duration = 1000) {

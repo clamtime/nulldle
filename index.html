@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-  <script src="script.js" defer></script>
+  <link rel="stylesheet" href="styles.css?v=1">
+  <script src="script.js?v=1" defer></script>
   <title>Nul?dle</title>
 </head>
+
 <body>
 
   <a class="help-button" href="#popup1"></a>
@@ -16,95 +18,123 @@
       <h1>How To Play</h1>
       <h2>Do not guess the word in six tries.</h2>
       <ul>
-        <li><h3>Each guess must be a valid 5-letter word.</h3></li>
-        <li><h3>The color of the tiles will change to show how close your guess was to the word.</h3></li>
-        <li><h3>Each correctly guessed letter in the correct spot will deduct one point from your score.</h3></li>
-        <li><h3>Each guess must contain at least one unused letter from previous guesses.</h3></li>
+        <li>
+          <h3>Each guess must be a valid 5-letter word.</h3>
+        </li>
+        <li>
+          <h3>The color of the tiles will change to show how close your guess was to the word.</h3>
+        </li>
+        <li>
+          <h3>Each correctly guessed letter in the correct spot will deduct one point from your score.</h3>
+        </li>
+        <li>
+          <h3>Each guess must contain at least one unused letter from previous guesses.</h3>
+        </li>
       </ul>
       <div class="helpTilesExamples">
         <p><strong>Examples</strong></p>
         <div aria-label="wordy" class="helpTilesExample">
           <div data-testid="wordy-letter" class="helpTileContainer">
-            <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="1st letter, W, correct" data-state="correct" data-animation="idle" data-testid="tile" aria-live="off">
+            <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="1st letter, W, correct"
+              data-state="correct" data-animation="idle" data-testid="tile" aria-live="off">
               w
             </div>
           </div>
           <div data-testid="wordy-letter" class="helpTileContainer">
-              <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="2nd letter, O" data-state="tbd" data-animation="idle" data-testid="tile" aria-live="off">
-                o
-              </div>
+            <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="2nd letter, O"
+              data-state="tbd" data-animation="idle" data-testid="tile" aria-live="off">
+              o
             </div>
-            <div data-testid="wordy-letter" class="helpTileContainer">
-              <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="3rd letter, R" data-state="tbd" data-animation="idle" data-testid="tile" aria-live="off">
-                r
-              </div>
-            </div>
-            <div data-testid="wordy-letter" class="helpTileContainer">
-              <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="4th letter, D" data-state="tbd" data-animation="idle" data-testid="tile" aria-live="off">
-                d
-              </div>
-            </div>
-            <div data-testid="wordy-letter" class="helpTileContainer">
-              <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="5th letter, Y" data-state="tbd" data-animation="idle" data-testid="tile" aria-live="off">
-                y
-              </div>
-            </div>
-            <br><strong>W</strong> <h3>is in the word and in the correct spot. This scenario will deduct one point.</h3>
           </div>
-          <div aria-label="light" class="helpTilesExample">
-            <div data-testid="light-letter" class="helpTileContainer">
-              <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="1st letter, L" data-state="tbd" data-animation="idle" data-testid="tile" aria-live="off">
-                l
-              </div>
+          <div data-testid="wordy-letter" class="helpTileContainer">
+            <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="3rd letter, R"
+              data-state="tbd" data-animation="idle" data-testid="tile" aria-live="off">
+              r
             </div>
-            <div data-testid="light-letter" class="helpTileContainer">
-              <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="2nd letter, I, present in another position" data-state="present" data-animation="idle" data-testid="tile" aria-live="off">
-                i
-              </div>
+          </div>
+          <div data-testid="wordy-letter" class="helpTileContainer">
+            <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="4th letter, D"
+              data-state="tbd" data-animation="idle" data-testid="tile" aria-live="off">
+              d
             </div>
-            <div data-testid="light-letter" class="helpTileContainer"><div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="3rd letter, G" data-state="tbd" data-animation="idle" data-testid="tile" aria-live="off">
+          </div>
+          <div data-testid="wordy-letter" class="helpTileContainer">
+            <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="5th letter, Y"
+              data-state="tbd" data-animation="idle" data-testid="tile" aria-live="off">
+              y
+            </div>
+          </div>
+          <br><strong>W</strong>
+          <h3>is in the word and in the correct spot. This scenario will deduct one point.</h3>
+        </div>
+        <div aria-label="light" class="helpTilesExample">
+          <div data-testid="light-letter" class="helpTileContainer">
+            <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="1st letter, L"
+              data-state="tbd" data-animation="idle" data-testid="tile" aria-live="off">
+              l
+            </div>
+          </div>
+          <div data-testid="light-letter" class="helpTileContainer">
+            <div class="helpTileSmall" role="img" aria-roledescription="tile"
+              aria-label="2nd letter, I, present in another position" data-state="present" data-animation="idle"
+              data-testid="tile" aria-live="off">
+              i
+            </div>
+          </div>
+          <div data-testid="light-letter" class="helpTileContainer">
+            <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="3rd letter, G"
+              data-state="tbd" data-animation="idle" data-testid="tile" aria-live="off">
               g
             </div>
           </div>
           <div data-testid="light-letter" class="helpTileContainer">
-            <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="4th letter, H" data-state="tbd" data-animation="idle" data-testid="tile" aria-live="off">
+            <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="4th letter, H"
+              data-state="tbd" data-animation="idle" data-testid="tile" aria-live="off">
               h
             </div>
           </div>
           <div data-testid="light-letter" class="helpTileContainer">
-            <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="5th letter, T" data-state="tbd" data-animation="idle" data-testid="tile" aria-live="off">
+            <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="5th letter, T"
+              data-state="tbd" data-animation="idle" data-testid="tile" aria-live="off">
               t
             </div>
           </div>
-          <br><strong>I</strong> <h3>is in the word but in the wrong spot. This scenario does not deduct any points.</h3>
+          <br><strong>I</strong>
+          <h3>is in the word but in the wrong spot. This scenario does not deduct any points.</h3>
         </div>
         <div aria-label="rogue" class="helpTilesExample">
           <div data-testid="rogue-letter" class="helpTileContainer">
-            <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="1st letter, R" data-state="tbd" data-animation="idle" data-testid="tile" aria-live="off">
+            <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="1st letter, R"
+              data-state="tbd" data-animation="idle" data-testid="tile" aria-live="off">
               r
             </div>
           </div>
           <div data-testid="rogue-letter" class="helpTileContainer">
-            <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="2nd letter, O" data-state="tbd" data-animation="idle" data-testid="tile" aria-live="off">
+            <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="2nd letter, O"
+              data-state="tbd" data-animation="idle" data-testid="tile" aria-live="off">
               o
             </div>
           </div>
           <div data-testid="rogue-letter" class="helpTileContainer">
-            <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="3rd letter, G" data-state="tbd" data-animation="idle" data-testid="tile" aria-live="off">
+            <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="3rd letter, G"
+              data-state="tbd" data-animation="idle" data-testid="tile" aria-live="off">
               g
             </div>
           </div>
           <div data-testid="rogue-letter" class="helpTileContainer">
-            <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="4th letter, U, absent" data-state="absent" data-animation="idle" data-testid="tile" aria-live="off">
+            <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="4th letter, U, absent"
+              data-state="absent" data-animation="idle" data-testid="tile" aria-live="off">
               u
             </div>
           </div>
           <div data-testid="rogue-letter" class="helpTileContainer">
-            <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="5th letter, E" data-state="tbd" data-animation="idle" data-testid="tile" aria-live="off">
+            <div class="helpTileSmall" role="img" aria-roledescription="tile" aria-label="5th letter, E"
+              data-state="tbd" data-animation="idle" data-testid="tile" aria-live="off">
               e
             </div>
           </div>
-          <br><strong>U</strong> <h3>is not in the word in any spot. This scenario does not deduct any points.</h3>
+          <br><strong>U</strong>
+          <h3>is not in the word in any spot. This scenario does not deduct any points.</h3>
         </div>
       </div>
 
@@ -179,10 +209,13 @@
     <button class="key" data-key="M">M</button>
     <button data-delete class="key large">
       <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-        <path fill="var(--color-tone-1)" d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z"></path>
+        <path fill="var(--color-tone-1)"
+          d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z">
+        </path>
       </svg>
     </button>
-</div>
+  </div>
 </body>
-<footer><a href="https://twitter.com/clamtime", style="color: white", target="_blank">game by @clamtime</a></footer>
+<footer><a href="https://twitter.com/clamtime" , style="color: white" , target="_blank">game by @clamtime</a></footer>
+
 </html>
