@@ -15316,13 +15316,11 @@ function saveData() {
   if (hasPlayedToday) {
     localStorage.setItem('hasPlayedToday', hasPlayedToday);
     localStorage.setItem('lastDatePlayed', new Date().toISOString().split('T')[0]);
-    console.log(lastDatePlayed);
 
-    localStorage.setItem('lettersFound', lettersFound);
-    localStorage.setItem('lettersGuessed', lettersGuessed);
+    localStorage.setItem('lettersFound', JSON.stringify(lettersFound));
+    localStorage.setItem('lettersGuessed', JSON.stringify(lettersGuessed));
     localStorage.setItem('guessGrid', guessGrid.innerHTML);
     localStorage.setItem('keyboard', keyboard.innerHTML);
-    console.log(keyboard);
     localStorage.setItem('score', score);
     console.log("saving...");
   } else {
@@ -15344,7 +15342,9 @@ function loadData() {
   } else if (hasPlayedToday == true) {
     console.log("loading...");
 
-    lettersFound = localStorage.getItem('lettersFound');
+    lettersFound = JSON.parse(localStorage.getItem('lettersFound'));
+    //    lettersFound.forEach(console.log())
+
     lettersGuessed = localStorage.getItem('lettersGuessed').split(',');
 
     guessGrid.innerHTML = localStorage.getItem('guessGrid');
@@ -15355,17 +15355,13 @@ function loadData() {
       Array.from(tmpTiles.slice(i * 5, (i + 1) * 5)).forEach((...params) => flipTile(...params, "", FLIP_ANIMATION_DURATION / 3));
     }
 
+    score = 5 - Array.from(lettersFound).filter((v) => (v === true)).length //localStorage.getItem('score');
+    document.getElementById("score-div").innerHTML = `Score: ${score}/5`;
 
-    console.log(canPlay);
     setTimeout(() => {
-      console.log("Delayed for .5 second.");
       canPlay = true;
 
     }, "750");
-
-
-    score = localStorage.getItem('score');
-    document.getElementById("score-div").innerHTML = `Score: ${score}/5`;
   } else {
     console.log("has not played, starting fresh.");
     canPlay = true;
@@ -15496,6 +15492,7 @@ function submitGuess() {
   stopInteraction()
   activeTiles.forEach((...params) => flipTile(...params, guess));
   saveData();
+
 }
 
 function flipTile(tile, index, array, guess, speed = FLIP_ANIMATION_DURATION) {
@@ -15504,7 +15501,6 @@ function flipTile(tile, index, array, guess, speed = FLIP_ANIMATION_DURATION) {
   const key = keyboard.querySelector(`[data-key="${letter}"i]`)
   setTimeout(() => {
     tile.classList.add("flip")
-
   }, (index * speed) / 2)
 
   tile.addEventListener(
@@ -15542,8 +15538,6 @@ function flipTile(tile, index, array, guess, speed = FLIP_ANIMATION_DURATION) {
     },
     { once: true }
   )
-
-
 }
 
 function getActiveTiles() {
@@ -15584,6 +15578,8 @@ function shakeTiles(tiles) {
 }
 
 function checkWinLose(guess, tiles) {
+  saveData();
+
   if (guess === targetWord || score == 0) {
     showAlert('You Lose!' + '<br />' + `Word: ${targetWord.toUpperCase()}`, null)
     shakeTiles(tiles)
