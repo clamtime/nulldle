@@ -277,9 +277,9 @@ h3 {
 }
 
 .key.correct {
-  --hue: 115;
-  --saturation: 29%;
-  --lightness: 43%;
+  --hue: 0;
+  --saturation: 42%;
+  --lightness: 41%;
 }
 
 .guess-grid {
